@@ -6,21 +6,13 @@ import { CharMeasure } from './CharMeasure';
 
 export function getCoordsRelativeToElement(event: MouseEvent, element: HTMLElement): [number, number] {
   // Ignore browsers that don't support MouseEvent.pageX
-  if (event.pageX == null) {
-    return null;
+  if (event.target == null) {
+      return null;
   }
-
-  let x = event.pageX;
-  let y = event.pageY;
-
-  // Converts the coordinates from being relative to the document to being
-  // relative to the terminal.
-  while (element && element !== self.document.documentElement) {
-    x -= element.offsetLeft;
-    y -= element.offsetTop;
-    element = 'offsetParent' in element ? <HTMLElement>element.offsetParent : <HTMLElement>element.parentElement;
-  }
-  return [x, y];
+  return [
+      event.target.offsetLeft + event.offsetX,
+      event.target.offsetTop + event.offsetY
+  ];
 }
 
 /**
